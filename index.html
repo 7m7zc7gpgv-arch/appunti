@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#131716" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="I miei appunti" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="style.css" />
+    <title>I miei appunti</title>
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <aside class="sidebar" aria-label="Cartelle">
+        <div class="brand"><span class="brand-mark">✦</span><span>I miei appunti</span></div>
+        <button class="new-note wide" id="newNote">＋ Nuovo appunto</button>
+        <nav id="folderList" class="folder-list"></nav>
+        <button class="new-folder" id="newFolder">＋ Nuova cartella</button>
+        <p class="storage-note">I dati restano sul tuo dispositivo.</p>
+      </aside>
+
+      <main class="library" id="libraryView">
+        <header class="library-header">
+          <button class="mobile-menu" id="mobileMenu" aria-label="Apri cartelle">☰</button>
+          <div><p class="eyebrow">La tua raccolta</p><h1 id="folderTitle">Tutti gli appunti</h1></div>
+          <button class="new-note round" id="newNoteTop" aria-label="Nuovo appunto">＋</button>
+        </header>
+        <section id="noteGrid" class="note-grid" aria-live="polite"></section>
+        <section id="emptyState" class="empty-state" hidden>
+          <div class="empty-icon">✎</div>
+          <h2>Qui ci sono i tuoi pensieri.</h2>
+          <p>Crea un appunto a mano, un foglio a quadretti o una pagina a righe.</p>
+          <button class="new-note" id="emptyNewNote">Crea il primo appunto</button>
+        </section>
+      </main>
+
+      <main class="editor" id="editorView" hidden>
+        <header class="editor-header">
+          <button class="icon-button" id="backToLibrary" aria-label="Torna alla libreria">‹</button>
+          <input id="noteTitle" aria-label="Titolo dell'appunto" value="Senza titolo" />
+          <div class="editor-actions">
+            <button class="icon-button" id="addPage" title="Aggiungi pagina">＋</button>
+            <button class="icon-button" id="exportPdf" title="Stampa o salva in PDF">⇧</button>
+            <button class="icon-button danger" id="deleteNote" title="Elimina appunto">⌫</button>
+          </div>
+        </header>
+        <section class="toolbar" aria-label="Strumenti di scrittura">
+          <button class="tool active" data-tool="pen">✎ <span>Penna</span></button>
+          <button class="tool" data-tool="highlighter">▰ <span>Evidenziatore</span></button>
+          <button class="tool" data-tool="eraser">⌫ <span>Gomma</span></button>
+          <label class="color-picker" title="Colore"><input id="color" type="color" value="#1b1d1c" /><span></span></label>
+          <label class="size-picker">Spessore <input id="size" type="range" min="2" max="24" value="5" /></label>
+          <button class="tool undo" id="undo" title="Annulla">↶</button>
+          <button class="tool" id="redo" title="Ripeti">↷</button>
+          <button class="tool page-style" id="changeTemplate">▦ <span>Foglio</span></button>
+        </section>
+        <section class="canvas-zone">
+          <div class="page-tabs" id="pageTabs"></div>
+          <div id="paper" class="paper" aria-label="Foglio per scrivere">
+            <canvas id="canvas" width="1024" height="1448"></canvas>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="noteDialog">
+      <form method="dialog" id="noteForm">
+        <h2>Nuovo appunto</h2>
+        <label>Titolo<input id="newTitle" required maxlength="80" placeholder="Es. Meccanica razionale" /></label>
+        <label>Cartella<select id="newFolderSelect"></select></label>
+        <fieldset><legend>Tipo di foglio</legend>
+          <label><input type="radio" name="template" value="grid" checked /> Quadretti</label>
+          <label><input type="radio" name="template" value="lined" /> Righe</label>
+          <label><input type="radio" name="template" value="blank" /> Bianco</label>
+        </fieldset>
+        <div class="dialog-actions"><button value="cancel">Annulla</button><button class="new-note" value="default">Crea appunto</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="templateDialog">
+      <form method="dialog" id="templateForm"><h2>Modifica il foglio</h2>
+        <label><input type="radio" name="change-template" value="grid" /> Quadretti</label>
+        <label><input type="radio" name="change-template" value="lined" /> Righe</label>
+        <label><input type="radio" name="change-template" value="blank" /> Bianco</label>
+        <p>Il modello si applica alle nuove pagine. Le pagine già scritte non vengono mai sovrascritte.</p>
+        <div class="dialog-actions"><button value="cancel">Annulla</button><button class="new-note" value="default">Applica</button></div>
+      </form>
+    </dialog>
+    <div id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
+
